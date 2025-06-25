@@ -36,19 +36,19 @@ pipeline {
             // Merge and generate HTML report (even on failures)
             bat '''
                 npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"
-                npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome-report" --reportFilename "mochawesome"
+                npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome"
             '''
 
             // Archive and publish
-            archiveArtifacts artifacts: 'cypress\\reports\\mochawesome-report\\mochawesome.html', fingerprint: true
+            archiveArtifacts artifacts: 'cypress\\reports\\mochawesome\\mochawesome.html', fingerprint: true
             archiveArtifacts artifacts: 'cypress\\screenshots\\**\\*.*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'cypress\\videos\\**\\*.*', allowEmptyArchive: true
 
             // Publish HTML report
             publishHTML([
-                reportDir: 'cypress/reports/mochawesome-report',
+                reportDir: 'cypress/reports/mochawesome',
                 reportFiles: 'mochawesome.html',
-                reportName: 'MochaAwesome Report',
+                reportName: 'MochaAwesomeReport',
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ])
