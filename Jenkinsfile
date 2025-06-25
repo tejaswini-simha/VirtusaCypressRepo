@@ -25,7 +25,7 @@ pipeline {
             steps {
                 bat '''
                     npx mochawesome-merge "cypress\\reports\\*.json" > "cypress\\reports\\merged-report.json"
-                    npx marge "cypress\\reports\\merged-report.json" --reportDir "cypress\\reports\\mochawesome-report"
+                    npx marge "cypress\\reports\\merged-report.json" --reportDir "cypress\\reports\\mochawesome"
                 '''
             }
         }
@@ -33,12 +33,12 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'cypress\\reports\\mochawesome-report\\mochawesome.html', fingerprint: true
+            archiveArtifacts artifacts: 'cypress\\reports\\mochawesome\\mochawesome.html', fingerprint: true
             archiveArtifacts artifacts: 'cypress\\screenshots\\**\\*.*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'cypress\\videos\\**\\*.*', allowEmptyArchive: true
 
             publishHTML([
-                reportDir: 'cypress/reports/mochawesome-report',
+                reportDir: 'cypress/reports/mochawesome',
                 reportFiles: 'mochawesome.html',
                 reportName: 'MochaAwesome Report',
                 alwaysLinkToLastBuild: true,
