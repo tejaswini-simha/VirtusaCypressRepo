@@ -36,6 +36,7 @@ pipeline {
             // Merge and generate HTML report (even on failures)
             bat 'npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"'
             bat 'npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome"'
+            bat 'timeout /t 5 /nobreak' // Let file fully write
 
             // Archive and publish
             archiveArtifacts artifacts: 'cypress\\reports\\mochawesome\\mochawesome.html', fingerprint: true
@@ -47,6 +48,7 @@ pipeline {
                 reportDir: 'cypress/reports/mochawesome',
                 reportFiles: 'mochawesome.html',
                 reportName: 'MochaAwesomeReport',
+                allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ])
