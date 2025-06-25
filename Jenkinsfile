@@ -35,8 +35,8 @@ pipeline {
         always {
             // Merge and generate HTML report (even on failures)
             bat '''
-                npx mochawesome-merge "cypress\\reports\\mochawesome\\*.json" > "cypress\\reports\\merged-report.json"
-                npx marge "cypress\\reports\\merged-report.json" --reportDir "cypress\\reports\\mochawesome-report" --reportFilename "mochawesome"
+                npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"
+                npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome-report" --reportFilename "mochawesome"
             '''
 
             // Archive and publish
