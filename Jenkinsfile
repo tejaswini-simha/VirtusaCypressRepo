@@ -21,29 +21,38 @@ pipeline {
             }
         }
 
-        stage('Generate HTML Report') {
-            steps {
-                bat '''
-                    npx mochawesome-merge "cypress\\reports\\*.json" > "cypress\\reports\\merged-report.json"
-                    npx marge "cypress\\reports\\merged-report.json" --reportDir "cypress\\reports\\mochawesome"
-                '''
-            }
-        }
+        // stage('Generate HTML Report') {
+        //     steps {
+        //         bat '''
+        //             npx mochawesome-merge "cypress\\reports\\*.json" > "cypress\\reports\\merged-report.json"
+        //             npx marge "cypress\\reports\\merged-report.json" --reportDir "cypress\\reports\\mochawesome"
+        //         '''
+        //     }
+        // }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'cypress\\reports\\mochawesome\\mochawesome.html', fingerprint: true
+            // Merge and generate HTML report (even on failures)
+            bat '''
+                npx mochawesome-merge "cypress\\reports\\mochawesome\\*.json" > "cypress\\reports\\merged-report.json"
+                npx marge "cypress\\reports\\merged-report.json" --reportDir "cypress\\reports\\mochawesome-report" --reportFilename "mochawesome"
+            '''
+
+            // Archive and publish
+            archiveArtifacts artifacts: 'cypress\\reports\\mochawesome-report\\mochawesome.html', fingerprint: true
             archiveArtifacts artifacts: 'cypress\\screenshots\\**\\*.*', allowEmptyArchive: true
             archiveArtifacts artifacts: 'cypress\\videos\\**\\*.*', allowEmptyArchive: true
 
+            // Publish HTML report
             publishHTML([
-                reportDir: 'cypress/reports/mochawesome',
+                reportDir: 'cypress/reports/mochawesome-report',
                 reportFiles: 'mochawesome.html',
-                reportName: 'MochaAwesomeReport',
+                reportName: 'MochaAwesome Report',
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ])
         }
     }
+
 }
