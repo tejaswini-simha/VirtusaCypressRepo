@@ -34,10 +34,8 @@ pipeline {
     post {
         always {
             // Merge and generate HTML report (even on failures)
-            bat '''
-                npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"
-                npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome"
-            '''
+            bat 'npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"'
+            bat 'npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome"'
 
             // Archive and publish
             archiveArtifacts artifacts: 'cypress\\reports\\mochawesome\\mochawesome.html', fingerprint: true
