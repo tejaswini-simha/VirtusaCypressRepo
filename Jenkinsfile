@@ -40,7 +40,7 @@ pipeline {
             publishHTML([
                 reportDir: 'cypress/reports/mochawesome',
                 reportFiles: 'mochawesome.html',
-                reportName: 'MochaAwesome Report',
+                reportName: 'MochaAwesomeReport',
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ])
