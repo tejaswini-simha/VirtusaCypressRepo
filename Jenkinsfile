@@ -35,7 +35,7 @@ pipeline {
         always {
             // Merge and generate HTML report (even on failures)
             bat 'npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"'
-            bat 'npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome"'
+            bat 'npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome" --inline'
             bat 'ping -n 6 127.0.0.1 > nul' //Removed the nobreak. nobreak doesn;t work inside jenkins
 
             // Archive and publish
