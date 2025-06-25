@@ -36,7 +36,7 @@ pipeline {
             // Merge and generate HTML report (even on failures)
             bat 'npx mochawesome-merge "cypress/reports/mochawesome/*.json" > "cypress/reports/merged-report.json"'
             bat 'npx marge "cypress/reports/merged-report.json" --reportDir "cypress/reports/mochawesome" --reportFilename "mochawesome"'
-            bat 'timeout /t 5 /nobreak' // Let file fully write
+            bat 'timeout /t 5' //Removed the nobreak. nobreak doesn;t work inside jenkins
 
             // Archive and publish
             archiveArtifacts artifacts: 'cypress\\reports\\mochawesome\\mochawesome.html', fingerprint: true
