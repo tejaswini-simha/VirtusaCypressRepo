@@ -48,7 +48,8 @@ pipeline {
                 reportDir: 'cypress/reports/mochawesome',
                 reportFiles: 'mochawesome.html',
                 reportName: 'MochaAwesomeReport',
-                allowMissing: true,
+                allowMissing: false,
+                escapeUnderscores: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ])
