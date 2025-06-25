@@ -1,0 +1,23 @@
+{
+  "name": "virtusa_db_testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^14.5.0",
+    "mocha": "^11.7.1",
+    "mocha-multi-reporters": "^1.5.1",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^5.0.0",
+    "mochawesome-report-generator": "^6.2.0"
+  },
+  "dependencies": {
+    "mysql": "github:mysqljs/mysql"
+  }
+}
