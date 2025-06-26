@@ -48,6 +48,12 @@ pipeline {
             }
         }
 
+        stage('Clean reports') {
+            steps {
+                bat 'del /Q cypress\\reports\\mochawesome\\*.json'
+            }
+        }
+
         stage('Run Specs in Parallel') {
             steps {
                 script {
@@ -88,7 +94,7 @@ pipeline {
             publishHTML([
                 reportDir: 'cypress/reports/mochawesome',
                 reportFiles: 'mochawesome.html',
-                reportName: 'Mochawesome Report',
+                reportName: 'MochawesomeReport',
                 allowMissing: false,
                 escapeUnderscores: false,
                 alwaysLinkToLastBuild: true,
