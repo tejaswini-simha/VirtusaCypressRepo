@@ -67,24 +67,32 @@ pipeline {
                 script {
                     def specs = env.SPECS.split(',')
                     def branches = [:]
+                    def ciBuildId = env.BUILD_TAG ?: "jenkins-build-${env.BUILD_ID}"
 
                     for (int i = 0; i < specs.size(); i++) {
                         def spec = specs[i].trim()
-                        def index = i // needed for closure capture
+                        def index = i // avoid closure issue
 
-                        branches["Spec-${index+1}"] = {
-                            node('windows-agent') { // Replace with a label common to your agents
+                        branches["Spec-${index + 1}"] = {
+                            node('windows-agent') { // Replace with your agents' label
                                 ws {
-                                    // Re-checkout code on agent
+                                    echo "🧪 Running spec: ${spec} on ${env.NODE_NAME}"
+
+                                    // Step 1: Checkout source
                                     checkout scm
 
-                                    echo "▶️ Running spec: ${spec} on ${env.NODE_NAME}"
-
-                                    // Reinstall dependencies
+                                    // Step 2: Install deps
                                     bat 'npm ci'
 
-                                    // Run spec
-                                    bat "npx cypress run --record --key 97c9d750-0d32-4465-81d9-6e3fafb79c2a --browser chrome --headless --spec \"${spec}\""
+                                    // Step 3: Run Cypress test with Cloud integration
+                                    bat """
+                                        npx cypress run ^
+                                            --record ^
+                                            --key 97c9d750-0d32-4465-81d9-6e3fafb79c2a ^
+                                            --parallel ^
+                                            --ci-build-id "${ciBuildId}" ^
+                                            --spec "${spec}"
+                                    """
                                 }
                             }
                         }
