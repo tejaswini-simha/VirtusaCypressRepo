@@ -69,7 +69,7 @@ pipeline {
                         def spec = specs[i].trim()
                         branches["Spec-${i+1}"] = {
                             echo "▶️ Starting spec: ${spec} on executor ${env.NODE_NAME} at ${new Date()}"
-                            bat "npx cypress run --browser chrome --headless --spec \"${spec}\" --no-trash"
+                            bat "npx cypress run --browser chrome --headless --spec \"${spec}\""
                         }
                     }
 
