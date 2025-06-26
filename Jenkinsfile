@@ -9,10 +9,6 @@ pipeline {
         )
     }
 
-    environment {
-        CYPRESS_CACHE_FOLDER = 'node_modules/.cache/Cypress'
-    }
-
     stages {
         stage('Checkout') {
             steps {
