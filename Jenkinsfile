@@ -31,22 +31,24 @@ pipeline {
 
                     if (pattern) {
                         echo "🔍 Resolving wildcard spec pattern: ${pattern}"
-                        // Use PowerShell to resolve wildcard to full file paths
+
                         resolvedSpecs = powershell(
                             returnStdout: true,
-                            script: "Get-ChildItem -Recurse -Path ${pattern} | ForEach-Object { $_.FullName.Replace('\\', '/') }"
+                            script: "Get-ChildItem -Recurse -Path ${pattern} | ForEach-Object { \"\$($_.FullName.Replace('\\\\', '/'))\" }"
                         ).trim().split('\n').findAll { it }
                     } else {
                         echo "🔍 No spec pattern provided. Using default: cypress/e2e/**/*.cy.js"
+
                         resolvedSpecs = powershell(
                             returnStdout: true,
-                            script: "Get-ChildItem -Recurse -Path cypress/e2e -Filter *.cy.js | ForEach-Object { $_.FullName.Replace('\\', '/') }"
+                            script: "Get-ChildItem -Recurse -Path cypress/e2e -Filter *.cy.js | ForEach-Object { \"\$($_.FullName.Replace('\\\\', '/'))\" }"
                         ).trim().split('\n').findAll { it }
                     }
 
                     echo "📄 Resolved ${resolvedSpecs.size()} spec files:"
                     resolvedSpecs.each { echo "- ${it}" }
 
+                    // Pass to next stage as comma-separated string
                     env.SPECS = resolvedSpecs.join(',')
                 }
             }
