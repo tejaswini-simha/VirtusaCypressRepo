@@ -7,7 +7,7 @@ describe('Login test to demoqa', () => {
         cy.loginLambda("koushik350@gmail.com","Pass123$");
     } )
 
-    it("Intercept the Login ", () => {
+    it("Session Handling_lambda.js - 1st Test ", () => {
         cy.visit("/");
         // cy.get("[class*='dropdown-toggle'] span").contains("My account").click();
         // cy.get('[placeholder="E-Mail Address"]').type('koushik350@gmail.com');
@@ -17,7 +17,7 @@ describe('Login test to demoqa', () => {
         cy.get("#column-right a").contains("My Account").click();
     })
 
-    it("Intercept the Login - 2 ", () => {
+    it("Session Handling_lambda.js - 2nd test -  ", () => {
         cy.visit("/");
         // cy.get("[class*='dropdown-toggle'] span").contains("My account").click();
         // cy.get('[placeholder="E-Mail Address"]').type('koushik350@gmail.com');

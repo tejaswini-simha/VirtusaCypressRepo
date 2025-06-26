@@ -18,7 +18,7 @@ describe(("Login with different creds"), ()=>{
         cy.login('tu3123','tu3123');
     } )
 
-    it('Login 3rd Time -this time with a same user - And Sign out', ()=> {
+    it('Session Handling1.js - Login 3rd Time -this time with a same user - And Sign out', ()=> {
         cy.visit("/");
         cy.get("span.maintext").should("contain", " My Account");
         // cy.url().should('contain', 'login_sucess');

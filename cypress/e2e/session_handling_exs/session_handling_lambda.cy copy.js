@@ -14,12 +14,12 @@ describe('Login test to demoqa', () => {
         cy.login('tu3123','tu3123');
     } )
 
-    it('Login 1st Time - And Sign out', ()=> {
+    it('Session Handling_lambdaCopy.js - Test1 Login 1st Time - And Sign out', ()=> {
         cy.visit("/");
         cy.get(".menu_text").should("contain", "Welcome back tu3123");
     })
 
-    it('Login 2nd Time - And Sign out', ()=> {
+    it('Session Handling_lambdaCopy.js - Test2 - Login 2nd Time - And Sign out', ()=> {
         cy.visit("/");
         cy.get("span.maintext").should("contain", " My Account");
         // cy.url().should('contain', 'login_sucess');
