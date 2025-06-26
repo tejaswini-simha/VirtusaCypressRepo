@@ -56,9 +56,9 @@ pipeline {
 
         stage('Clean Cypress Artifacts') {
             steps {
-                bat 'rmdir /S /Q cypress\\downloads'
-                bat 'rmdir /S /Q cypress\\screenshots'
-                bat 'rmdir /S /Q cypress\\videos'
+                bat 'rmdir /S /Q cypress\\downloads || exit 0'
+                bat 'rmdir /S /Q cypress\\screenshots || exit 0'
+                bat 'rmdir /S /Q cypress\\videos || exit 0'
             }
         }
 
