@@ -53,9 +53,12 @@ pipeline {
                 }
             }
         }
-        stage('Clean reports') {
+
+        stage('Clean Cypress Artifacts') {
             steps {
-                bat 'del /Q cypress\\reports\\mochawesome\\*.json'
+                bat 'rmdir /S /Q cypress\\downloads'
+                bat 'rmdir /S /Q cypress\\screenshots'
+                bat 'rmdir /S /Q cypress\\videos'
             }
         }
 

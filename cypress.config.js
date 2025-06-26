@@ -25,6 +25,7 @@ module.exports = defineConfig({
       runMode: 2,     // Retries for failed tests in Jenkins (run mode)
       openMode: 0     // No retries in Cypress GUI
     },
+    trashAssetsBeforeRuns: false,
     "env":{
       "db": {
           "user": "root",
