@@ -4,7 +4,7 @@ pipeline {
     parameters {
         string(
             name: 'SPEC_FILES',
-            defaultValue: '',
+            defaultValue: 'cypress/e2e/session_handling_exs/session_handling*.cy.js',
             description: 'Comma-separated spec file paths to run (e.g., cypress/e2e/login.cy.js,cypress/e2e/dashboard.cy.js). Leave empty to run all.'
         )
     }
@@ -20,6 +20,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat 'npm install'
+                bat 'npx cypress --version'
             }
         }
 
