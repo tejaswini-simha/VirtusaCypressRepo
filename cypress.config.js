@@ -2,6 +2,7 @@ const { defineConfig } = require("cypress");
 const mysql = require("mysql");
 
 module.exports = defineConfig({
+  projectId: "q4b2t8",
   e2e: {
     setupNodeEvents(on, config) {
       on("task", {
