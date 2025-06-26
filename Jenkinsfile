@@ -70,9 +70,23 @@ pipeline {
 
                     for (int i = 0; i < specs.size(); i++) {
                         def spec = specs[i].trim()
-                        branches["Spec-${i+1}"] = {
-                            echo "▶️ Starting spec: ${spec} on executor ${env.NODE_NAME} at ${new Date()}"
-                            bat "npx cypress run --record --key 97c9d750-0d32-4465-81d9-6e3fafb79c2a --browser chrome --headless --spec \"${spec}\""
+                        def index = i // needed for closure capture
+
+                        branches["Spec-${index+1}"] = {
+                            node('windows-agent') { // Replace with a label common to your agents
+                                ws {
+                                    // Re-checkout code on agent
+                                    checkout scm
+
+                                    echo "▶️ Running spec: ${spec} on ${env.NODE_NAME}"
+
+                                    // Reinstall dependencies
+                                    bat 'npm ci'
+
+                                    // Run spec
+                                    bat "npx cypress run --record --key 97c9d750-0d32-4465-81d9-6e3fafb79c2a --browser chrome --headless --spec \"${spec}\""
+                                }
+                            }
                         }
                     }
 
