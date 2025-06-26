@@ -26,27 +26,32 @@ pipeline {
         stage('Determine Specs to Run') {
             steps {
                 script {
-                    def specList = []
+                    def pattern = params.SPEC_FILES?.trim()
+                    def resolvedSpecs = []
 
-                    if (params.SPEC_FILES?.trim()) {
-                        // Use user-provided spec list
-                        specList = params.SPEC_FILES.split(',').collect { it.trim() }
-                        echo "Running specified specs:\n${specList.join('\n')}"
-                    } else {
-                        // Auto-discover specs in cypress/e2e
-                        def discovered = powershell(
+                    if (pattern) {
+                        echo "🔍 Resolving wildcard spec pattern: ${pattern}"
+                        // Use PowerShell to resolve wildcard to full file paths
+                        resolvedSpecs = powershell(
                             returnStdout: true,
-                            script: 'Get-ChildItem -Recurse -Filter *.cy.js -Path cypress\\e2e | ForEach-Object { $_.FullName.Replace("\\", "/") }'
-                        ).trim().split('\n')
-
-                        specList = discovered.collect { it.trim() }
-                        echo "Discovered specs:\n${specList.join('\n')}"
+                            script: "Get-ChildItem -Recurse -Path ${pattern} | ForEach-Object { $_.FullName.Replace('\\', '/') }"
+                        ).trim().split('\n').findAll { it }
+                    } else {
+                        echo "🔍 No spec pattern provided. Using default: cypress/e2e/**/*.cy.js"
+                        resolvedSpecs = powershell(
+                            returnStdout: true,
+                            script: "Get-ChildItem -Recurse -Path cypress/e2e -Filter *.cy.js | ForEach-Object { $_.FullName.Replace('\\', '/') }"
+                        ).trim().split('\n').findAll { it }
                     }
 
-                    env.SPECS = specList.join(',')
+                    echo "📄 Resolved ${resolvedSpecs.size()} spec files:"
+                    resolvedSpecs.each { echo "- ${it}" }
+
+                    env.SPECS = resolvedSpecs.join(',')
                 }
             }
         }
+
 
         stage('Clean reports') {
             steps {
@@ -63,8 +68,7 @@ pipeline {
                     for (int i = 0; i < specs.size(); i++) {
                         def spec = specs[i].trim()
                         branches["Spec-${i+1}"] = {
-                            echo "▶️ Running: ${spec}"
-                            echo "Starting spec ${spec} on executor ${env.NODE_NAME} at ${new Date()}"
+                            echo "▶️ Starting spec: ${spec} on executor ${env.NODE_NAME} at ${new Date()}"
                             bat "npx cypress run --browser chrome --headless --spec \"${spec}\""
                         }
                     }
